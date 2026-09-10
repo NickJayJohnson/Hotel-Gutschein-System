@@ -136,11 +136,15 @@
         </div>
         {% endif %}
 
-        <form action="/admin/login" method="post">
-            <div class="form-group">
-                <label for="passwort">Passwort eingeben</label>
-                <input type="password" id="passwort" name="passwort" placeholder="••••••••" required autofocus>
-            </div>
+        <form method="POST" action="/admin/login">
+            <label for="username">Benutzername:</label>
+            <input type="text" id="username" name="Benutzername" required>
+
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" name="Passwort" required>
+
+            <button type="submit">Anmelden</button>
+        </form>
 
             <button type="submit" class="login-btn">Anmelden</button>
         </form>
