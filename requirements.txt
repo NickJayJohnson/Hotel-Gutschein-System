@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+sqlalchemy
+python-multipart
+itsdangerous
+reportlab
+qrcode
+pillow
+stripe
