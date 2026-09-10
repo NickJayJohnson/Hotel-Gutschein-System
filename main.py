@@ -44,9 +44,11 @@ def shop_page(request: Request):
 def home(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
 
+from fastapi import FastAPI, Request
+
 @app.get("/admin/login", response_class=HTMLResponse)
-def login_page(Anfrage: Anfrage):
-    return templates.TemplateResponse(request=request, name="login.html", context={"error": None})
+def login_page(Anfrage: Request):  # <--- Hier muss ': Request' stehen!
+    return Vorlagen.TemplateResponse(request=Anfrage, name="login.html", context={"Fehler": None})
 
 @app.post("/admin/login", response_class=HTMLResponse)
 def login_submit(request: Request, username: str = Form(...), password: str = Form(...)):
