@@ -136,18 +136,17 @@
         </div>
         {% endif %}
 
-        <form method="POST" action="/admin/login">
-            <label for="username">Benutzername:</label>
-            <input type="text" id="username" name="Benutzername" required>
+    <form method="POST" action="/admin/login">
+        <label for="username">BENUTZERNAME:</label>
+        <input type="text" id="username" name="Benutzername" required value="admin">
 
-            <label for="password">Passwort:</label>
-            <input type="password" id="password" name="Passwort" required>
+        <label for="password">PASSWORT:</label>
+        <input type="password" id="password" name="Passwort" required>
 
-            <button type="submit">Anmelden</button>
-        </form>
-
-            <button type="submit" class="login-btn">Anmelden</button>
-        </form>
+        <!-- Den kleinen weißen Button entfernen -->
+        <!-- Den gelben Button als type="submit" innerhalb des <form> platzieren: -->
+        <button type="submit" class="login-btn">Anmelden</button>
+    </form>
 
         <div class="footer-note">
             Geschützter Bereich • Nur für autorisiertes Personal
