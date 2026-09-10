@@ -55,7 +55,7 @@ def login_submit(request: Request, username: str = Form(...), password: str = Fo
 
     if is_user and is_pass:
         request.session["is_admin"] = True
-        return RedirectResponse(url="/admin/dashboard", status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
     
     return templates.TemplateResponse(request=request, name="login.html", context={"error": "Ungültige Zugangsdaten!"})
 
