@@ -2,62 +2,123 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Willkommen im Hotel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Hotel & Spa - Willkommen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background: #0f172a;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
+        * {
+            box-sizing: border-box;
         }
 
-        .hero {
-            max-width: 600px;
-            padding: 2rem;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Atmosphere Hotel Background with Dark Vignette Overlay */
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.90)), url('https://www.habw.de/wp-content/uploads/2025/04/hotel-am-blauen-wunder-rezeption.jpg') center/cover no-repeat fixed;
+        }
+
+        .landing-card {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4rem 3rem;
+            max-width: 680px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .subtitle-top {
+            font-size: 0.85rem;
+            color: #d4af37;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin: 0 0 1.2rem 0;
+            line-height: 1.2;
         }
 
         p {
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
+            color: #cbd5e0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
-            display: inline-block;
-            padding: 0.8rem 1.8rem;
-            border-radius: 8px;
+            padding: 1.1rem 2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             text-decoration: none;
-            font-weight: bold;
-            margin: 0.5rem;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .btn-primary {
-            background: #0284c7;
-            color: white;
+            background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
+            .btn-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+            }
+
         .btn-secondary {
-            background: #334155;
-            color: white;
+            background: rgba(15, 23, 42, 0.6);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
+
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: #d4af37;
+                color: #d4af37;
+                transform: translateY(-3px);
+            }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>Grand Hotel & Spa</h1>
-        <p>Schenken Sie Unvergessliche Momente mit unseren exklusiven Wertgutscheinen.</p>
-        <a href="/shop" class="btn btn-primary">Gutschein kaufen</a>
-        <a href="/login" class="btn btn-secondary">Rezeptions-Login</a>
+
+    <div class="landing-card">
+        <div class="subtitle-top">Willkommen im</div>
+        <h1>Hotel-Test</h1>
+        <p>Schenken Sie unvergessliche Momente und erholsame Auszeiten mit unseren exklusiven Wertgutscheinen.</p>
+
+        <div class="button-group">
+            <a href="/shop" class="btn btn-primary">Gutschein kaufen</a>
+            <a href="/admin/login" class="btn btn-secondary">Rezeptions-Login</a>
+        </div>
     </div>
+
 </body>
 </html>

@@ -2,96 +2,153 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Rezeption Login - Hotel Gutschein Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezeption Login - Grand Hotel & Spa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
+            padding: 0;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Elegantes Hotel-Hintergrundbild mit dunklem Overlay */
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.92)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
         }
 
         .login-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 3rem 2.5rem;
             width: 100%;
-            max-width: 380px;
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #1a252f;
+            max-width: 440px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
+        .hotel-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            color: #d4af37;
+            text-transform: uppercase;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #4a5568;
             font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #cbd5e0;
         }
 
         input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 0.75rem;
-            background: #2c3e50;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
             color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
         }
 
-            button:hover {
-                background: #34495e;
+            input:focus {
+                outline: none;
+                border-color: #d4af37;
+                box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
             }
 
-        .error {
-            background: #fed7d7;
-            color: #9b2c2c;
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
+        .login-btn {
+            width: 100%;
+            padding: 1.1rem;
+            background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+            color: #0f172a;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+            .login-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
+
     <div class="login-card">
-        <h2>Hotel Rezeption</h2>
-        {% if error %}
-        <div class="error">{{ error }}</div>
+        <h1 class="hotel-brand">Grand Hotel & Spa</h1>
+        <div class="subtitle">Rezeptions-Portal</div>
+
+        {% if fehler %}
+        <div class="error-message">
+            {{ fehler }}
+        </div>
         {% endif %}
-        <form action="/login" method="post">
+
+        <form action="/admin/login" method="post">
             <div class="form-group">
-                <label for="username">Benutzername</label>
-                <input type="text" id="username" name="username" required autocomplete="off">
+                <label for="passwort">Passwort eingeben</label>
+                <input type="password" id="passwort" name="passwort" placeholder="••••••••" required autofocus>
             </div>
-            <div class="form-group">
-                <label for="password">Passwort</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Anmelden</button>
+
+            <button type="submit" class="login-btn">Anmelden</button>
         </form>
+
+        <div class="footer-note">
+            Geschützter Bereich • Nur für autorisiertes Personal
+        </div>
     </div>
+
 </body>
 </html>
