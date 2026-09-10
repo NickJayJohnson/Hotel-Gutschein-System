@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezeptions-Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        header {
+            background: #1e293b;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            color: #f8fafc;
+            text-decoration: none;
+            background: #475569;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+        }
+
+            .tab-btn.active {
+                color: #2563eb;
+                border-bottom-color: #2563eb;
+            }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            padding: 0.6rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        button.action-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+            button.action-btn:hover {
+                background: #1d4ed8;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Hotel Management - Rezeption</h2>
+        <a href="/logout" class="logout-btn">Abmelden</a>
+    </header>
+
+    <!-- KPI DASHBOARD KACHELN -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #2563eb;">
+            <small style="color: #64748b; font-weight: 600; uppercase;">Gutscheine gesamt</small>
+            <div style="font-size: 1.8rem; font-weight: bold; color: #1e293b; margin-top: 0.3rem;">{{ gesamt_gutscheine }}</div>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #10b981;">
+            <small style="color: #64748b; font-weight: 600; uppercase;">Verkauftes Volumen</small>
+            <div style="font-size: 1.8rem; font-weight: bold; color: #1e293b; margin-top: 0.3rem;">{{ "%.2f"|format(gesamt_wert) }} €</div>
+        </div>
+        <div style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #f59e0b;">
+            <small style="color: #64748b; font-weight: 600; uppercase;">Offenes Guthaben</small>
+            <div style="font-size: 1.8rem; font-weight: bold; color: #1e293b; margin-top: 0.3rem;">{{ "%.2f"|format(offener_wert) }} €</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('kunden')">Kundenstamm</button>
+            <button class="tab-btn" onclick="switchTab('gutschein')">Gutschein ausstellen</button>
+            <button class="tab-btn" onclick="switchTab('einloesen')">Check-in / Einlösen</button>
+        </div>
+
+        <!-- REITER 1: KUNDENSTAMM -->
+        <div id="tab-kunden" class="tab-content active">
+            <h3>Neuen Gast anlegen</h3>
+            <form action="/admin/kunde/neu" method="post" class="form-grid">
+                <div class="form-group">
+                    <label>Name des Gastes</label>
+                    <input type="text" name="name" required placeholder="z. B. Max Mustermann">
+                </div>
+                <div class="form-group">
+                    <label>E-Mail-Adresse</label>
+                    <input type="email" name="email" required placeholder="max@example.com">
+                </div>
+                <div class="form-group full">
+                    <button type="submit" class="action-btn">Gast speichern</button>
+                </div>
+            </form>
+
+            <h3>Registrierte Kunden</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>E-Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for kunde in kunden %}
+                    <tr>
+                        <td>#{{ kunde.id }}</td>
+                        <td>{{ kunde.name }}</td>
+                        <td>{{ kunde.email }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="3">Noch keine Kunden angelegt.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- REITER 2: GUTSCHEIN ERSTELLEN -->
+        <div id="tab-gutschein" class="tab-content">
+            <h3>Gutschein vor Ort ausstellen (Bar / EC)</h3>
+            <form action="/admin/gutschein/erstellen" method="post" class="form-grid">
+                <div class="form-group">
+                    <label>Wert in €</label>
+                    <input type="number" step="0.01" name="wert" required placeholder="50.00">
+                </div>
+                <div class="form-group">
+                    <label>Empfänger (optional)</label>
+                    <input type="text" name="empfaenger" placeholder="z. B. Maria">
+                </div>
+                <div class="form-group">
+                    <label>Absender (optional)</label>
+                    <input type="text" name="absender" placeholder="z. B. Anton">
+                </div>
+                <div class="form-group full">
+                    <label>Widmung (optional)</label>
+                    <textarea name="widmung" rows="2" placeholder="Alles Gute zum Geburtstag!"></textarea>
+                </div>
+                <div class="form-group full">
+                    <button type="submit" class="action-btn">Gutschein generieren</button>
+                </div>
+            </form>
+
+            <h3>Aktive Gutscheine</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Originalwert</th>
+                        <th>Restwert</th>
+                        <th>Empfänger</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for g in gutscheine %}
+                    <tr>
+                        <td><span class="badge">{{ g.code }}</span></td>
+                        <td>{{ "%.2f"|format(g.original_wert) }} €</td>
+                        <td><strong>{{ "%.2f"|format(g.rest_wert) }} €</strong></td>
+                        <td>{{ g.empfaenger_name or '-' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="4">Noch keine Gutscheine vorhanden.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- REITER 3: EINLÖSEN -->
+        <div id="tab-einloesen" class="tab-content">
+            <h3>Gutschein beim Check-in verrechnen</h3>
+            <form action="/admin/gutschein/einloesen" method="post" class="form-grid">
+                <div class="form-group">
+                    <label>Gutschein Code</label>
+                    <input type="text" name="code" required placeholder="z. B. ABC12345" style="text-transform: uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Abbuchen (€)</label>
+                    <input type="number" step="0.01" name="betrag" required placeholder="25.00">
+                </div>
+                <div class="form-group full">
+                    <button type="submit" class="action-btn" style="background: #059669;">Betrag abbuchen</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
