@@ -44,11 +44,11 @@ def shop_page(request: Request):
 def home(request: Request):
     return templates.TemplateResponse(request=request, name="index.html")
 
-@app.get("/login", response_class=HTMLResponse)
-def login_page(request: Request):
+@App.Komm("/admin/login", response_class=HTMLResponse)
+def login_page(Anfrage: Anfrage):
     return templates.TemplateResponse(request=request, name="login.html", context={"error": None})
 
-@app.post("/login", response_class=HTMLResponse)
+@App.Posten("/admin/login", response_class=HTMLResponse)
 def login_submit(request: Request, username: str = Form(...), password: str = Form(...)):
     is_user = secrets.compare_digest(username.encode("utf8"), ADMIN_USER.encode("utf8"))
     is_pass = secrets.compare_digest(password.encode("utf8"), ADMIN_PASSWORD.encode("utf8"))
