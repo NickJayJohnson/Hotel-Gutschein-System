@@ -47,19 +47,17 @@ def home(request: Request):
 from fastapi import FastAPI, Request
 
 @app.get("/admin/login", response_class=HTMLResponse)
-def login_page(Anfrage: Request):  # <--- Hier muss ': Request' stehen!
-    return Vorlagen.TemplateResponse(request=Anfrage, name="login.html", context={"Fehler": None})
+def login_page(Anfrage: Request):
+    return Vorlagen.TemplateResponse("login.html", {"request": Anfrage, "Fehler": None})
 
 @app.post("/admin/login", response_class=HTMLResponse)
-def login_submit(request: Request, username: str = Form(...), password: str = Form(...)):
-    is_user = secrets.compare_digest(username.encode("utf8"), ADMIN_USER.encode("utf8"))
-    is_pass = secrets.compare_digest(password.encode("utf8"), ADMIN_PASSWORD.encode("utf8"))
-
+def login_submit(Anfrage: Request, Benutzername: str = Form(...), Passwort: str = Form(...)):
+    # ... Deine Login-Logik ...
     if is_user and is_pass:
-        request.session["is_admin"] = True
-        return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
+        Anfrage.session["is_admin"] = True
+        return RedirectResponse(url="/admin/dashboard", status_code=303)
     
-    return templates.TemplateResponse(request=request, name="login.html", context={"error": "Ungültige Zugangsdaten!"})
+    return Vorlagen.TemplateResponse("login.html", {"request": Anfrage, "Fehler": "Ungültige Zugangsdaten"})
 
 @app.get("/logout")
 def logout(request: Request):
